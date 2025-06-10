@@ -1,0 +1,47 @@
+﻿@model IEnumerable<CrudMVCApp.Models.Usuario>
+
+@{
+    ViewData["Title"] = "ABM Usuario";
+}
+
+<h1>Usuarios</h1>
+
+<p>
+    <a asp-action="Create">Agregar Usuario</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.user)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.clave)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rol)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.user)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.clave)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rol)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

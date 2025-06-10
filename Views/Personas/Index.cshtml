@@ -1,0 +1,62 @@
+﻿
+@model IEnumerable<CrudMVCApp.Models.Persona>
+
+@{
+    ViewData["Title"] = "ABM de Clientes";
+}
+
+<h1>ABM de Clientes</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-outline-primary" >Nuevo Cliente</a>
+</p>
+<form asp-controller="Personas" asp-action="Index" method="get">
+    <p>Buscar: 
+        <input type="text" name="buscar" class="form-text"/> <!--NAME TIENE QUE COINCIDIR CON EL VALOR QUE AÑADIMOS EN LOS PARAMETROS DEL CONTROLADOR-->
+        <input type="submit" value="buscar" class="btn btn-sm" /> <!--PARA BUSCAR LA PERSONA-->
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Apellido)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Cuit)
+            </th>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.Genero)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) { //ACA SE IMPRIME CADA PERSONA
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Apellido)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.Cuit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Genero)
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-secondary">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info">Detalle</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger" >Eliminar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

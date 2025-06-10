@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Login Page"; 
+}
+@{
+    Layout = null; // No usa ningún layout
+}
+
+
+<form asp-controller="Login" asp-action="Login" method="post">
+    <input type="text" name="user" placeholder="Usuario" />
+    <input type="password" name="clave" placeholder="Contraseña" />
+    <input type="submit" value="Login" />
+    <span class="text-danger">@ViewBag.Mensaje</span>
+</form>
+
+@{
+}
