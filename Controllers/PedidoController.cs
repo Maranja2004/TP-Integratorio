@@ -10,23 +10,23 @@ using CrudMVCApp.Models;
 
 namespace CrudMVCApp.Controllers
 {
-    public class DireccionsController : Controller
+    public class PedidoController : Controller
     {
         private readonly AppDbContext _context;
 
-        public DireccionsController(AppDbContext context)
+        public PedidoController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: Direccions
+        // GET: Pedido
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Direccion.Include(d => d.Persona); // Include Persona to avoid lazy loading issues
+            var appDbContext = _context.Pedido.Include(p => p.Persona).Include(p => p.Usuario);
             return View(await appDbContext.ToListAsync());
         }
 
-        // GET: Direccions/Details/5
+        // GET: Pedido/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +34,45 @@ namespace CrudMVCApp.Controllers
                 return NotFound();
             }
 
-            var direccion = await _context.Direccion 
-                .Include(d => d.Persona)
+            var pedido = await _context.Pedido
+                .Include(p => p.Persona)
+                .Include(p => p.Usuario)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (direccion == null)
+            if (pedido == null)
             {
                 return NotFound();
             }
 
-            return View(direccion);
+            return View(pedido);
         }
 
-        // GET: Direccions/Create
+        // GET: Pedido/Create
         public IActionResult Create()
         {
             ViewData["PersonaId"] = new SelectList(_context.Persona, "Id", "Id");
+            ViewData["UsuarioId"] = new SelectList(_context.Usuario, "id", "clave");
             return View();
         }
 
-        // POST: Direccions/Create
+        // POST: Pedido/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Calle,Ciudad,CodigoPostal,PersonaId")] Direccion direccion)
+        public async Task<IActionResult> Create([Bind("Id,UsuarioId,PersonaId,Total,cantidadProductos")] Pedido pedido)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(direccion);
+                _context.Add(pedido);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PersonaId"] = new SelectList(_context.Persona, "Id", "Id", direccion.PersonaId);
-            return View(direccion);
+            ViewData["PersonaId"] = new SelectList(_context.Persona, "Id", "Id", pedido.PersonaId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuario, "id", "clave", pedido.UsuarioId);
+            return View(pedido);
         }
 
-        // GET: Direccions/Edit/5
+        // GET: Pedido/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +80,24 @@ namespace CrudMVCApp.Controllers
                 return NotFound();
             }
 
-            var direccion = await _context.Direccion.FindAsync(id);
-            if (direccion == null)
+            var pedido = await _context.Pedido.FindAsync(id);
+            if (pedido == null)
             {
                 return NotFound();
             }
-            ViewData["PersonaId"] = new SelectList(_context.Persona, "Id", "Id", direccion.PersonaId);
-            return View(direccion);
+            ViewData["PersonaId"] = new SelectList(_context.Persona, "Id", "Id", pedido.PersonaId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuario, "id", "clave", pedido.UsuarioId);
+            return View(pedido);
         }
 
-        // POST: Direccions/Edit/5
+        // POST: Pedido/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Calle,Ciudad,CodigoPostal,PersonaId")] Direccion direccion)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UsuarioId,PersonaId,Total,cantidadProductos")] Pedido pedido)
         {
-            if (id != direccion.Id)
+            if (id != pedido.Id)
             {
                 return NotFound();
             }
@@ -102,12 +106,12 @@ namespace CrudMVCApp.Controllers
             {
                 try
                 {
-                    _context.Update(direccion);
+                    _context.Update(pedido);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DireccionExists(direccion.Id))
+                    if (!PedidoExists(pedido.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +122,12 @@ namespace CrudMVCApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PersonaId"] = new SelectList(_context.Persona, "Id", "Id", direccion.PersonaId);
-            return View(direccion);
+            ViewData["PersonaId"] = new SelectList(_context.Persona, "Id", "Id", pedido.PersonaId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuario, "id", "clave", pedido.UsuarioId);
+            return View(pedido);
         }
 
-        // GET: Direccions/Delete/5
+        // GET: Pedido/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,35 +135,36 @@ namespace CrudMVCApp.Controllers
                 return NotFound();
             }
 
-            var direccion = await _context.Direccion
-                .Include(d => d.Persona)
+            var pedido = await _context.Pedido
+                .Include(p => p.Persona)
+                .Include(p => p.Usuario)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (direccion == null)
+            if (pedido == null)
             {
                 return NotFound();
             }
 
-            return View(direccion);
+            return View(pedido);
         }
 
-        // POST: Direccions/Delete/5
+        // POST: Pedido/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var direccion = await _context.Direccion.FindAsync(id);
-            if (direccion != null)
+            var pedido = await _context.Pedido.FindAsync(id);
+            if (pedido != null)
             {
-                _context.Direccion.Remove(direccion);
+                _context.Pedido.Remove(pedido);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DireccionExists(int id)
+        private bool PedidoExists(int id)
         {
-            return _context.Direccion.Any(e => e.Id == id);
+            return _context.Pedido.Any(e => e.Id == id);
         }
     }
 }

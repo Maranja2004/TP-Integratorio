@@ -47,6 +47,7 @@ namespace CrudMVCApp.Data
                 .WithOne(dp => dp.Producto)
                 .HasForeignKey(dp => dp.ProductoId);
         }
+        public DbSet<CrudMVCApp.Models.Pedido> Pedido { get; set; } = default!;
 
 
 

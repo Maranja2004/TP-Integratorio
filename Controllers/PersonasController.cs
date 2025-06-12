@@ -40,12 +40,8 @@ namespace CrudMVCApp.Controllers
             }
 
             var persona = await _context.Persona
-                //.FindAsync(id) nos permite solo busquedas por PK
+               
                 .FirstOrDefaultAsync(m => m.Id == id);
-              //  (p => p.Dni == DNI && p.Genero == "F")
-                
-            // Select Top 1 * From Persona where id= 2
-            // lambda
             if (persona == null)
             {
                 return NotFound();
@@ -60,9 +56,7 @@ namespace CrudMVCApp.Controllers
             return View();
         }
 
-        // POST: Personas/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Personas/Creat
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Apellido,Dni,Cuit,Futbol,Basquet,Otros,Genero")] Persona persona)
@@ -94,8 +88,6 @@ namespace CrudMVCApp.Controllers
         }
 
         // POST: Personas/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Apellido,Dni,Cuit,Futbol,Basquet,Otros,Genero")] Persona persona)

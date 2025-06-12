@@ -1,4 +1,4 @@
-﻿@model CrudMVCApp.Models.Direccion
+﻿@model CrudMVCApp.Models.Pedido
 
 @{
     ViewData["Title"] = "Delete";
@@ -8,26 +8,26 @@
 
 <h3>¿Estás seguro de que deseas eliminarlo?</h3>
 <div>
-    <h4>Direccion</h4>
+    <h4>Pedido</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Calle)
+            @Html.DisplayNameFor(model => model.Total)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Calle)
+            @Html.DisplayFor(model => model.Total)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ciudad)
+            @Html.DisplayNameFor(model => model.cantidadProductos)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ciudad)
+            @Html.DisplayFor(model => model.cantidadProductos)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CodigoPostal)
+            @Html.DisplayNameFor(model => model.Usuario)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CodigoPostal)
+            @Html.DisplayFor(model => model.Usuario.clave)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Persona)

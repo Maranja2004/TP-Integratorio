@@ -19,3 +19,4 @@ namespace CrudMVCApp.Models
         public DetallePedido() { } // Constructor por defecto
     }
 }
+ 
