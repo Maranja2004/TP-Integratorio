@@ -6,9 +6,10 @@ namespace CrudMVCApp.Models
     public class Usuario
     {
         public int id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Ingrese un nombre de usuario")]
         public string user { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Ingrese una contraseña de usuario")]
         public string clave { get; set; }
         public string rol { get; set; }
 

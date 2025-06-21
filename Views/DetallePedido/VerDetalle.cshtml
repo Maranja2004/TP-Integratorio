@@ -1,0 +1,43 @@
+﻿@model IEnumerable<CrudMVCApp.Models.DetallePedido>
+
+<h2>Detalles del Pedido</h2>
+
+<div class="mb-3">
+    <strong>ID del pedido:</strong> @ViewBag.IdPedido <br />
+    <strong>ID del cliente :</strong> @ViewBag.ClienteId <br />
+    <strong>ID del usuario:</strong> @ViewBag.UsuarioId
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Descripcion</th>
+            <th>Cantidad</th>
+            <th>P. Unitario</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Producto?.Nombre</td>
+                <td>@item.Producto?.Descripcion</td>
+                <td>@item.Cantidad</td>
+                <td>$@item.PrecioUnitario</td>
+                <td>$@item.Subtotal</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="mt-2">
+    <p> <strong>Cantidad de productos:</strong> @ViewBag.CantidadProductos </p>
+    <p>  <strong> Total del pedido:</strong> $@ViewBag.Total </p>
+  
+    
+
+</div>
+<div>
+    <a asp-controller="Pedido" asp-action="Index">Volver a la lista</a>
+</div>

@@ -5,8 +5,7 @@ namespace CrudMVCApp.Models
 {
     public class Persona
     {
-        //AÑADIRR VALIDACIONES A LOS CAMPOS, EJ: REQUERIDO, LONGITUD MAXIMA, ETC.
-        public int Id { get; set; } // Clave primaria necesaria para EF
+        public int Id { get; set; } 
         public string Nombre { get; set; }
        
         [Display(Name = "Apellido del Cliente")]
@@ -23,7 +22,7 @@ namespace CrudMVCApp.Models
         [ValidateNever]
         public ICollection<Direccion> Direcciones { get; set; }
         [ValidateNever]
-        public ICollection<Pedido> Pedidos { get; set; } // Relacion uno a muchos con Pedido
+        public ICollection<Pedido> Pedidos { get; set; } 
         public Persona (){} 
         
     }

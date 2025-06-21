@@ -21,7 +21,16 @@ namespace CrudMVCApp.Controllers
 
         // GET: Usuario
         public async Task<IActionResult> Index()
+
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("User")))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            if (HttpContext.Session.GetString("Rol") != "admin")
+            {
+                return NotFound();
+            }
             return View(await _context.Usuario.ToListAsync());
         }
 

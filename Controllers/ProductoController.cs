@@ -23,10 +23,7 @@ namespace CrudMVCApp.Controllers
         public async Task<IActionResult> Index(string buscar)
         {
             var producto = from Producto in _context.Producto select Producto;
-            if (!String.IsNullOrEmpty(buscar))
-            {
-                producto = producto.Where(s=> s.Nombre.Contains(buscar));   
-            }
+           
            
             return View(await producto.ToListAsync());
         }

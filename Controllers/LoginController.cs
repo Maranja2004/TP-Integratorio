@@ -20,14 +20,20 @@ namespace CrudMVCApp.Controllers
         {
             var usuario = _context.Usuario
                 .FirstOrDefault(u => u.user == user && u.clave == clave); //verificamos que el usuario existe
-
+            if (user == null || clave == null)
+            {
+                ViewBag.Mensaje = "Usuario o contraseña no pueden estar vacios";
+                return View("Index");
+            }
             if (usuario != null)
             { //Setemos los datos de la sesion
+                HttpContext.Session.SetInt32("Id", usuario.id); //Guardamos el id del usuario en la sesion
                 HttpContext.Session.SetString("User", usuario.user);
                 HttpContext.Session.SetString("Rol", usuario.rol);
                 //lo llevamos a la pag home
                 return RedirectToAction("Index", "Home");
             }
+            
             ViewBag.Mensaje = "Usuario o contraseña incorrectos";
             return View("Index");
         }

@@ -1,0 +1,165 @@
+﻿@model CrudMVCApp.Models.DetallePedido  
+@using Microsoft.AspNetCore.Mvc.Rendering  
+
+@{  
+    ViewData["Title"] = "Agregar Producto al Pedido";  
+    var personas = ViewBag.Personas as List<SelectListItem>;  
+    var productos = ViewBag.Productos as List<SelectListItem>;  
+    var personaId = ViewBag.PersonaId?.ToString();  
+    var pedido = ViewBag.PedidoActual as CrudMVCApp.Models.Pedido;  
+    var suma = 0.0;  
+    var cantidadProductos = 0;  
+}  
+
+<h2>Agregar productos al pedido</h2>  
+<div class="container-fluid">  
+    <form asp-controller="DetallePedido" asp-action="AgregarDetalle" method="post">  
+        <div asp-validation-summary="All" class="text-danger"></div>  
+
+        <div class="row">  
+            <div class="col-md-4">  
+                <label>Cliente:</label>  
+                <select name="personaId" required class="form-select"
+                        onchange="window.location.href='@Url.Action("AgregarDetalle", "DetallePedido")?personaId=' + this.value;">
+                        <option value=""> Seleccione un cliente</option>  
+                    @foreach (var persona in personas)  
+                    {  
+                        <option value="@persona.Value" selected="@(personaId == persona.Value ? "selected" : null)">  
+                            @persona.Text  
+                        </option>  
+                    }  
+                </select>  
+
+                @if (personaId != null)  
+                {  
+                    <input type="hidden" name="PersonaId" value="@personaId" />  
+                }  
+
+                @if (ViewBag.Genero != null && ViewBag.Documento != null)  
+                {  
+                    <strong>Género:</strong> @ViewBag.Genero
+                    <strong>Documento:</strong> @ViewBag.Documento
+                }  
+            </div>  
+
+            <div class="col-md-4 position-relative">  
+                <label>Producto:</label>  
+                <input type="text" id="codigoProducto" name="CodigoProducto" class="form-control" placeholder="Escriba código..." autocomplete="off" required/>  
+                <ul id="sugerencias" class="list-group position-absolute w-100" style="z-index:1000;"></ul>  
+                <input type="hidden" id="ProductoId" name="ProductoId" />  
+            </div>  
+
+            <div class="col-md-4">  
+                <label>Cantidad:</label>  
+                <input asp-for="Cantidad" type="number" min="1" class="form-control" required />  
+            </div>  
+        </div>  
+
+        <div class="mt-3">  
+            <button type="submit" class="btn btn-secondary">Agregar Producto</button>  
+        </div>  
+    </form>  
+</div>  
+
+<hr />  
+<h3>Productos del pedido actual</h3>  
+<table class="table table-bordered">  
+    <thead>  
+        <tr>  
+            <th>Producto</th> 
+            <th>Descripcion</th>
+            <th>Cantidad</th>  
+            <th>Precio Unitario</th>  
+            <th>Subtotal</th>
+            <th></th>
+        </tr>  
+    </thead>  
+    <tbody>  
+        @if (pedido != null && pedido.DetallePedidos.Any())  
+        {  
+            foreach (var item in pedido.DetallePedidos)  
+            {  
+                <tr>  
+                    <td>@item.Producto?.Nombre</td>  
+                    <td>@item.Producto?.Descripcion</td>
+                    <td>@item.Cantidad</td>  
+                    <td>@item.PrecioUnitario.ToString("C")</td>  
+                    <td>@item.Subtotal.ToString("C")</td>  
+                    <td>
+                        <form asp-controller="DetallePedido" asp-action="EliminarProducto" method="post">
+                            <input type="hidden" name="id" value="@item.id" />
+                            <button type="submit" class="btn btn-danger">Eliminar producto</button>
+                        </form>
+                     </td>
+                </tr>  
+            }  
+        }  
+        else  
+        {  
+            <tr>  
+                <td colspan="4" class="text-center">No hay productos agregados</td>  
+            </tr>  
+        }  
+    </tbody>  
+</table>  
+
+<div class="container-fluid">  
+    <div class="row">  
+        <div class="col-md-4">  
+            <p><strong>Usuario:</strong> @pedido?.Usuario?.user</p>  
+        </div>  
+        <div class="col-md-4">  
+            <p><strong>Cantidad de Productos:</strong> @foreach (var item in pedido.DetallePedidos) { cantidadProductos += item.Cantidad; } @cantidadProductos</p>  
+        </div>  
+        <div class="col-md-4">  
+            <p><strong>Total: $</strong> @foreach (var item in pedido.DetallePedidos) { suma += item.Subtotal; } @suma</p>  
+        </div>  
+    </div>  
+</div>  
+<div class="container">
+    <div class="row">
+        <div class="col-auto">
+            <form asp-controller="DetallePedido" asp-action="EliminarDetalle" method="post">
+                <button type="submit" class="btn btn-danger px-3">Vaciar Carrito</button>
+            </form>
+        </div>
+        <div class="col-auto">
+            <form asp-controller="Pedido" asp-action="GuardarPedido" method="post">
+                <button type="submit" class="btn btn-primary">Agregar Pedido</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {  
+<script>  
+document.getElementById("codigoProducto").addEventListener("input", function () {  
+    const valor = this.value;  
+    const lista = document.getElementById("sugerencias");  
+    if (valor.length < 1) {  
+        lista.innerHTML = "";  
+        return;  
+    }  
+    fetch(`/DetallePedido/BuscarPorCodigo?codigo=${valor}`)  
+        .then(res => res.json())  
+        .then(data => {  
+            lista.innerHTML = "";  
+            data.forEach(p => {  
+                const li = document.createElement("li");  
+                li.className = "list-group-item list-group-item-action";  
+                li.textContent = `${p.id} - ${p.nombre}`;  
+                li.dataset.id = p.id;  
+
+                li.onclick = () => {  
+                    document.getElementById("codigoProducto").value = p.id;  
+                    document.getElementById("ProductoId").value = p.id;  
+                    lista.innerHTML = "";  
+                };  
+
+                lista.appendChild(li);  
+            });  
+        });  
+});  
+</script>  
+}

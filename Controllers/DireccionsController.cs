@@ -22,7 +22,11 @@ namespace CrudMVCApp.Controllers
         // GET: Direccions
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Direccion.Include(d => d.Persona); // Include Persona to avoid lazy loading issues
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) //
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            var appDbContext = _context.Direccion.Include(d => d.Persona); 
             return View(await appDbContext.ToListAsync());
         }
 

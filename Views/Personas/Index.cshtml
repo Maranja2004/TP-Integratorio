@@ -8,14 +8,8 @@
 <h1>ABM de Clientes</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-outline-primary" >Agregar Cliente</a>
+    <a asp-action="Create" class="btn btn-primary" >Agregar Cliente</a>
 </p>
-<form asp-controller="Personas" asp-action="Index" method="get">
-    <p>Buscar: 
-        <input type="text" name="buscar" class="form-text"/> <!--NAME TIENE QUE COINCIDIR CON EL VALOR QUE AÑADIMOS EN LOS PARAMETROS DEL CONTROLADOR-->
-        <input type="submit" value="buscar" class="btn btn-sm" /> <!--PARA BUSCAR LA PERSONA-->
-    </p>
-</form>
 <table class="table">
     <thead>
         <tr>

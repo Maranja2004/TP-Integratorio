@@ -7,14 +7,9 @@
 <h1>Productos</h1>
 
 <p>
-    <a asp-action="Create">Agregar Producto</a>
+    <a class="btn btn-primary"  asp-action="Create">Agregar Producto</a>
 </p>
-<form asp-controller="Producto" asp-action="Index" method="get">
-    <p> Buscar:
-        <input type="text" name="buscar" class="form-text" />
-        <input type="submit" value="buscar" class="btn btn-sm btn-warning" />
-    </p> 
-</form>
+
 <table class="table">
     <thead>
         <tr>

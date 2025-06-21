@@ -22,6 +22,10 @@ namespace CrudMVCApp.Controllers
         // GET: Personas
         public async Task<IActionResult> Index(string buscar)
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("User")))
+            {
+                return RedirectToAction("Index", "Login");
+            }
             var personas = from persona in _context.Persona select persona; //consulta de linq
             if (!string.IsNullOrEmpty(buscar)) //si la cadena buscar....
             {

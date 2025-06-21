@@ -7,16 +7,13 @@
 <h1>Usuarios</h1>
 
 <p>
-    <a asp-action="Create">Agregar Usuario</a>
+    <a class="btn btn-primary" asp-action="Create">Agregar Usuario</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.user)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.clave)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.rol)
@@ -29,9 +26,6 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.user)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.clave)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.rol)
