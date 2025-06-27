@@ -9,7 +9,8 @@
 <p>
     <a class="btn btn-primary" asp-action="Create">Agregar Direccion</a>
 </p>
-<table class="table">
+<div class="table-responsive">
+<table class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>
@@ -22,7 +23,7 @@
                 @Html.DisplayNameFor(model => model.CodigoPostal)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Persona)
+               Cliente
             </th>
             <th></th>
         </tr>
@@ -41,7 +42,7 @@
                     @Html.DisplayFor(modelItem => item.CodigoPostal)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Persona.Id)
+                    @Html.DisplayFor(modelItem => item.Persona.Nombre)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-secondary">Editar</a>
@@ -52,3 +53,4 @@
         }
     </tbody>
 </table>
+</div>

@@ -10,6 +10,7 @@ namespace CrudMVCApp.Models
         public string user { get; set; }
 
         [Required(ErrorMessage = "Ingrese una contraseña de usuario")]
+        [DataType(DataType.Password)]
         public string clave { get; set; }
         public string rol { get; set; }
 

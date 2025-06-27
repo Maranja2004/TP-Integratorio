@@ -6,10 +6,14 @@ namespace CrudMVCApp.Models
     public class Direccion
     {
         public int Id { get; set; }
-        [StringLength(20, ErrorMessage = "La calle no puede exceder los 150 caracteres.")]
+        [Required(ErrorMessage = "El campo calle es obligatorio.")]
+        [StringLength(150, ErrorMessage = "La calle no puede exceder los 150 caracteres.")]
+        [RegularExpression(@"^[a-zA-Z0-9\s]+$", ErrorMessage = "La calle no puede contener caracteres especiales.")]
         public string Calle { get; set; }
+
         [Required(ErrorMessage = "El campo ciudad es obligatorio.")]
         [MaxLength(15, ErrorMessage = "La ciudad debe tener maximo 50 caracteres")]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "La ciudad solo puede contener letras y espacios.")]
         public string Ciudad { get; set; }
 
         [Required(ErrorMessage = "El campo codigo postal es obligatorio.")]

@@ -44,9 +44,11 @@
 
             <div class="col-md-4 position-relative">  
                 <label>Producto:</label>  
-                <input type="text" id="codigoProducto" name="CodigoProducto" class="form-control" placeholder="Escriba código..." autocomplete="off" required/>  
+                <input type="text" id="codigoProducto" name="CodigoProducto" class="form-control" placeholder="Escriba código..." autocomplete="off" required/> 
                 <ul id="sugerencias" class="list-group position-absolute w-100" style="z-index:1000;"></ul>  
                 <input type="hidden" id="ProductoId" name="ProductoId" />  
+                <span asp-validation-for="ProductoId" class="text-danger"></span>
+
             </div>  
 
             <div class="col-md-4">  
@@ -63,7 +65,9 @@
 
 <hr />  
 <h3>Productos del pedido actual</h3>  
-<table class="table table-bordered">  
+<div class="table-responsive">
+
+<table class="table table-bordered table-hover table-responsive">
     <thead>  
         <tr>  
             <th>Producto</th> 
@@ -103,6 +107,7 @@
     </tbody>  
 </table>  
 
+</div>
 <div class="container-fluid">  
     <div class="row">  
         <div class="col-md-4">  
@@ -134,6 +139,20 @@
 
 @section Scripts {  
 <script>  
+
+    document.querySelector("form").addEventListener("submit", function (e) {
+    const codigo = document.getElementById("codigoProducto").value;
+    const productoId = document.getElementById("ProductoId").value;
+    const errorSpan = document.querySelector("span[data-valmsg-for='ProductoId']");
+
+    if (!productoId || productoId !== codigo) {
+        e.preventDefault();
+        errorSpan.textContent = "El código ingresado no corresponde a un producto válido.";
+    } else {
+        errorSpan.textContent = ""; 
+    }
+});
+
 document.getElementById("codigoProducto").addEventListener("input", function () {  
     const valor = this.value;  
     const lista = document.getElementById("sugerencias");  

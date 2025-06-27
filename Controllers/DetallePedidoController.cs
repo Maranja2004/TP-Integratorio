@@ -66,7 +66,7 @@ namespace CrudMVCApp.Controllers
                 }).ToList();
 
             ViewBag.PedidoActual = pedido;
-            ViewBag.PersonaId = personaId ?? pedido.PersonaId;
+            ViewBag.PersonaId = personaId ?? pedido.PersonaId; //se usa el valor del pedido o el valor enviado por la url
 
             if (ViewBag.PersonaId != null)
             {
@@ -109,7 +109,7 @@ namespace CrudMVCApp.Controllers
                 pedido.DetallePedidos.Add(detalle);
             }
 
-            pedido.PersonaId = personaId;
+            pedido.PersonaId = personaId; //si se cambio la persona en mitad del pedido se sobreescrire recien aca
 
             HttpContext.Session.SetString("PedidoTemp", JsonSerializer.Serialize(pedido));
 
@@ -140,15 +140,15 @@ namespace CrudMVCApp.Controllers
                 return RedirectToAction("AgregarDetalle");
             }
             var pedido = JsonSerializer.Deserialize<Pedido>(pedidoJson);
-            pedido.DetallePedidos.Clear(); // Esto elimina todos los detalles
+            pedido.DetallePedidos.Clear(); // sto elimina todos los detalles
             HttpContext.Session.SetString("PedidoTemp", JsonSerializer.Serialize(pedido));
             return RedirectToAction("AgregarDetalle", new { personaId = pedido.PersonaId });
         }
-        // GET: Buscar productos por código (para autocompletar)
+        //¿Buscar productos por código (pa autocompletar)
         public IActionResult BuscarPorCodigo(string codigo)
         {
             var productos = _context.Producto
-                .Where(p => p.id.ToString().Contains(codigo)) // Asegurate que Producto tenga campo Codigo
+                .Where(p => p.id.ToString().Contains(codigo)) 
                 .Select(p => new
                 {
                     id = p.id,
